@@ -1,0 +1,1091 @@
+Лабораторна робота №21. Шаблонні функції та класи
+
+Марков Владислав Андрійович, гр. КН-922Б 
+
+Загальне завдання
+
+Зробити шаблоний клас-список (на базі динамічного масиву), що має шаблоноване поле масиву (для будь-якого існуючого типу даних)
+Створити наступні методи:
+вивод вмісту масиву на екран;
+визначити індекс переданого елемента в заданому масиві;
+відсортувати елементи масиву;
+визначити значення мінімального елемента масиву;
+додати елемент до кінця масиву;
+видалити елемент з масиву за індексом.
+Основна частина:
+
+===========================(main.cpp)===============================================================================
+
+#include <iostream>
+#include <string>
+#include <limits>
+#include <vector>
+#include <algorithm>
+
+using std::cin;
+using std::cout;
+using std::endl;
+using std::numeric_limits;
+using std::streamsize;
+using std::string;
+using std::find;
+
+#include "Student.h"
+#include "Demo_vector.h"
+
+int main()
+{	
+	Student student1(1,"Джек","Річард", 2018, 19);
+	Student student2(1,"Том","Лінкольн", 2022, 21);
+	Student student3(0,"Алекс","Нільсон", 2020, 18);
+	Student student4(2,"Боб","Шоун", 2019, 24);
+	Student student5(0,"Джон","Кенеді", 2018, 18);
+	Student student6(0,"Карл","Марс", 2018, 20);
+	
+	Demo_vector<Student> vector_class;
+	vector_class.push_back(student1);
+	vector_class.push_back(student2);
+	vector_class.push_back(student3);
+	vector_class.push_back(student4);
+	vector_class.push_back(student5);
+	
+	Demo_vector<int> vector_int;
+	vector_int.push_back(235);
+	vector_int.push_back(567);
+	vector_int.push_back(123);
+	vector_int.push_back(76);
+	vector_int.push_back(489);
+	
+	cout << endl << "Робота класу шаблоний список" << endl;
+	
+	cout << "=======================================" << endl << endl;
+	
+	
+	cout<<"Демострація роботи метода виводу вмісту масива на екран"<< endl;
+		
+	cout<< endl << "Вміст масиву типу -->[int]<--" << endl << "---" << endl;
+	vector_int.print_scr();
+	cout<< "---" << endl;
+		
+	cout<< endl << "Вміст масиву типу -->[class Student]<--" << endl << "---" << endl;
+	vector_class.print_scr();
+	cout<< "---" << endl;
+	
+	
+	cout << endl << "=======================================" << endl << endl;
+	
+	
+	cout<<"Демострація роботи метода отримання індексу переданого елемента у масив"<< endl;
+		
+	cout << endl <<"Переданий елемент [567]"<< endl << "---" << endl;
+	cout << vector_int.find_i(567) << endl << "---" << endl;
+		
+	cout << endl <<"Переданий елемент [ні; Алекс; Нільсон; 2020; 18;]"<< endl << "---" << endl;
+	cout << vector_class.find_i(student3) << endl << "---" << endl;	
+	
+	
+	cout << endl << "=======================================" << endl << endl;
+	
+	
+	cout<<"Демострація роботи метода для пошуку мінімального значення у масиві"<< endl;
+		
+	cout << endl <<"Мінімальний елемент у масиві типу -->[int]<-- це (76)"<< endl << "---" << endl;
+	cout << vector_int.find_min() << endl << "---" << endl;
+		
+	cout << endl <<"Мінімальний елемент у масиві типу -->[class Student]<-- це (так; Джек; Річард; 2018; 19;)"<< endl << "---" << endl;
+	cout << vector_class.find_min() << endl << "---" << endl;
+	
+	
+	cout << endl << "=======================================" << endl << endl;
+	
+	
+	cout<<"Демострація роботи метода для додавання елемента у масив"<< endl;
+		
+	cout << endl <<"Поточний маисв типу -->[int]<--"<< endl << "---" << endl;
+	vector_int.print_scr();
+	cout<< "---" << endl;
+	cout << endl <<"Елемент який додаємо у масив типу -->[int]<-- це (100)"<< endl << "---" << endl;
+	vector_int.push_back(100);
+	vector_int.print_scr();
+	cout<< "---" << endl;
+		
+	cout << endl <<"Поточний маисв типу -->[class Student]<--"<< endl << "---" << endl;
+	vector_class.print_scr();
+	cout<< "---" << endl;
+	cout << endl <<"Елемент який додаємо у масив типу -->[class Student]<-- це (ні ;Карл; Марс; 2018; 20)"<< endl << "---" << endl;
+	vector_class.push_back(student6);
+	vector_class.print_scr();
+	cout<< "---" << endl;
+	
+	
+	cout << endl << "=======================================" << endl << endl;
+
+	
+	cout<<"Демострація роботи метода для видалення елемента з масиву"<< endl;
+		
+	cout << endl <<"Поточний маисв типу -->[int]<--"<< endl << "---" << endl;
+	vector_int.print_scr();
+	cout<< "---" << endl;
+	cout << endl <<"Елемент який видаляємо з масива типу -->[int]<-- це (100), інедекс(6) при розрахунку з 1 "<< endl << "---" << endl;
+	vector_int.remove_elem(6);
+	vector_int.print_scr();
+	cout<< "---" << endl;
+		
+	cout << endl <<"Поточний маисв типу -->[class Student]<--"<< endl << "---" << endl;
+	vector_class.print_scr();
+	cout<< "---" << endl;
+	cout << endl <<"Елемент який видаляємо з масива типу -->[class Student]<-- це (ні ;Карл; Марс; 2018; 20), інедекс(6) при розрахунку з 1"<< endl << "---" << endl;
+	vector_class.remove_elem(6);
+	vector_class.print_scr();
+	cout<< "---" << endl;
+	
+	
+	cout << endl << "=======================================" << endl << endl;
+	
+	
+	cout<<"Демострація роботи метода для сортування масиву"<< endl;
+		
+	cout << endl <<"Поточний маисв типу -->[int]<--"<< endl << "---" << endl;
+	vector_int.print_scr();
+	cout<< "---" << endl;
+	cout << endl <<"Відсортований масив від найменшого значення до найбільшого"<< endl << "---" << endl;
+	vector_int.sort_arr();
+	vector_int.print_scr();
+	cout<< "---" << endl;
+		
+	cout << endl <<"Поточний маисв типу -->[class Student]<--"<< endl << "---" << endl;
+	vector_class.print_scr();
+	cout<< "---" << endl;
+	cout << endl <<"Відсортований масив від найменшого року вступу до найбільшого"<< endl << "---" << endl;
+	vector_class.sort_arr();
+	vector_class.print_scr();
+	cout<< "---" << endl;
+	
+	
+	return 0;
+}
+
+===========================(Student.h)===============================================================================
+
+#ifndef Student_H
+#define Student_H
+
+using std::ostream;
+using std::string;
+
+class Student {
+    public:
+	Student();
+	Student(unsigned int budget_edu, string name_student, string famile_name, unsigned int enroll_year, unsigned int age);
+	Student(const Student &student);
+
+	~Student();
+
+	friend ostream &operator<<(ostream &os, const Student &student);
+
+	string get_budget_edu() const;
+
+	string get_name_student() const;
+
+	string get_name_famile() const;
+
+	unsigned int get_enroll_year() const;
+	
+	unsigned int get_age() const;
+	
+
+    private:
+	unsigned int budget_edu;
+	string name_student;
+	string famile_name;
+	unsigned int enroll_year;
+	unsigned int age;
+};
+
+#endif
+
+===========================(Demo_vector.h)===============================================================================
+
+#ifndef Arr_Student_H
+#define Arr_Student_H
+
+using std::ostream;
+
+template<typename T>
+class Demo_vector{
+	
+public:
+	
+	Demo_vector();
+	Demo_vector(const size_t n_val, const T& value);
+	Demo_vector(const Demo_vector& src);
+	~Demo_vector();
+	
+	friend bool operator==(const Student& student_classic, const Student& student_other);
+	friend bool operator>(const Student& student_classic, const Student& student_other);
+	friend ostream& operator<<(ostream& os, const Student& student);
+	
+	void reserve(size_t n);
+	void print_scr();
+	size_t find_i(const T& elements);
+	T find_min();
+	void sort_arr();
+	void push_back(const T& value);
+	void remove_elem(size_t index);
+	
+private:
+	
+	T *array;		
+	size_t n_elem;
+	size_t n_memory; 
+};
+
+#include"Demo_vector.inl"
+
+#endif
+
+===========================(Student.cpp)===============================================================================
+
+#include <iostream>
+#include <string>
+
+using std::cin;
+using std::cout;
+using std::endl;
+using std::streamsize;
+using std::string;
+
+#include "Student.h"
+
+
+//--------------------------------------------------------
+//----------(Student)-------------------------------------
+
+Student::Student()
+	: budget_edu(2), name_student("не вказано"), famile_name("не вказано"), enroll_year(0), age(0)
+{
+	cout << endl << "Був викликаний конструктор за замовчуванням" << endl;
+}
+
+Student::Student(unsigned int budget_edu, string name_student, string famile_name, unsigned int enroll_year, unsigned int age)
+	: budget_edu(budget_edu), name_student(name_student), famile_name(famile_name), enroll_year(enroll_year), age(age)
+{
+	cout << endl << "Був викликаний конструктор з параметрами" << endl;
+}
+
+Student::Student(const Student &student)
+	: budget_edu(student.budget_edu), name_student(student.name_student), famile_name(student.famile_name), enroll_year(student.enroll_year),
+	  age(student.age)
+{
+	cout << endl << "Був виклакений конструктор копіювання" << endl;
+}
+
+Student::~Student()
+{
+	cout << endl << "Був виклакений деструктор Student" << endl;
+}
+
+//--------------------------------------------------------
+//----------(budget_edu)----------------------------------
+
+string Student::get_budget_edu() const
+{
+	if (budget_edu == 1)
+		return "так";
+	else if (budget_edu == 0)
+		return "ні";
+	else
+		return "не вказано";
+};
+
+//--------------------------------------------------------
+//----------(name_student)--------------------------------
+
+string Student::get_name_student() const
+{
+	return name_student;
+};
+
+//--------------------------------------------------------
+//----------(name_famile)---------------------------------
+
+string Student::get_name_famile() const
+{
+	return famile_name;
+};
+
+//--------------------------------------------------------
+//----------(enroll_year)---------------------------------
+
+unsigned int Student::get_enroll_year() const
+{
+	return enroll_year;
+};
+
+//--------------------------------------------------------
+//----------(age)-------------------------------------
+
+unsigned int Student::get_age() const
+{
+	return age;
+};
+
+===========================(Demo_vector.inl)===============================================================================
+
+#include <iostream>
+#include <memory>
+
+using std::cin;
+using std::cout;
+using std::endl;
+using std::uninitialized_copy;
+
+#include "Student.h"
+#include "Demo_vector.h"
+
+//--------------------------------------------------------
+//----------(constructor & destructor)--------------------------
+template<typename T>
+Demo_vector<T>::Demo_vector() 
+	: array(NULL), n_elem(0), n_memory(0)
+{
+	cout << endl << "Був виклакений конструктор за замовчуванням Demo_vector" << endl;
+}
+
+template<typename T>
+Demo_vector<T>::Demo_vector(const size_t n_val, const T& value) 
+	: n_elem(n_val), n_memory(n_val)
+{
+	array = reinterpret_cast<T*>(new int8_t[n_val * sizeof(T)]);
+	
+	size_t i = 0;
+	try{
+		for(; i < n_val; i++)
+			new (array + i) T(value);
+	}catch(...){
+		for(size_t j = 0; j < i; j++)
+			array[i].~T();
+		throw;
+	}
+	
+	cout << endl << "Був виклакений конструктор з папрметрами Demo_vector" << endl;
+}
+
+template<typename T>
+Demo_vector<T>::~Demo_vector()
+{
+	if(array != NULL){
+		for(size_t i = 0; i < n_elem; i++)
+			array[i].~T();
+		delete[] reinterpret_cast<int8_t*>(array);
+	}
+	
+	cout << endl << "Був виклакений деструктор Demo_vector" << endl;
+}
+
+//--------------------------------------------------------
+//----------(overload operators)--------------------------
+
+bool operator==(const Student& student_classic, const Student& student_other){
+
+	return 
+	(student_classic.get_budget_edu() == student_other.get_budget_edu()) &&
+	(student_classic.get_name_student() == student_other.get_name_student())&&
+	(student_classic.get_name_famile() == student_other.get_name_famile())&&
+	(student_classic.get_enroll_year() == student_other.get_enroll_year())&&
+	(student_classic.get_age() == student_other.get_age());
+}
+
+ostream& operator<<(ostream& os, const Student& student){
+	
+	os <<student.get_budget_edu()<<"; "
+		<< student.name_student<<"; "
+		<< student.famile_name<<"; "
+		<< student.enroll_year<<"; "
+		<< student.age<<";";
+	return os;
+}
+
+bool operator>(const Student& student_classic, const Student& student_other){
+
+	return 
+	(student_classic.get_enroll_year() > student_other.get_enroll_year());
+}
+
+//--------------------------------------------------------
+//----------(methoods)------------------------------------
+
+template<typename T>
+void Demo_vector<T>::reserve(size_t n){
+	if(n<=n_memory)
+		return;
+	
+	T* newarr = reinterpret_cast<T*>(new int8_t[n * sizeof(T)]);
+	
+	try{
+		uninitialized_copy(array, array+n_elem, newarr);
+	}catch(...){
+		delete[] reinterpret_cast<int8_t*>(newarr);
+		throw;
+	}
+	
+	for(size_t i = 0; i < n_elem; i++)
+		array[i].~T();
+	
+	if(array != NULL)	
+		delete[] reinterpret_cast<int8_t*>(array);
+		
+	array = newarr;
+	n_memory = n;
+}
+
+template<typename T>
+void Demo_vector<T>::print_scr()
+{
+	if(n_elem == 0)
+		return;
+	
+	for(size_t i = 0, j = 1; i < n_elem; i++, j++)	
+		cout << array[i] << endl;
+}
+
+template<typename T>
+size_t Demo_vector<T>::find_i(const T& elements){
+
+	if(n_elem == 0 )
+		return n_elem;
+	
+	for(size_t i = 0; i < n_elem; i++)
+		if(array[i] == elements)
+			return i;
+	
+	return n_elem;	
+}
+
+template<typename T>
+T Demo_vector<T>::find_min(){
+	
+	if(n_elem == 0 ){
+		cout << endl << "value(cur_n_elem) <= 0" << endl; 
+		abort();
+	}
+	
+	T min_elem = array[0];
+	
+	for(size_t i = 1; i < n_elem; i++)
+		if(min_elem > array[i])
+			min_elem = array[i];
+	
+	return min_elem;
+	
+}
+
+template<typename T>
+void Demo_vector<T>::sort_arr(){
+	
+	if(n_elem == 0 ){
+		cout << endl << "value(cur_n_elem) <= 0" << endl; 
+		abort();
+	}
+	
+	for(unsigned int i = 0; i < n_elem - 1; i++){
+	
+		for(unsigned int j = 0; j < n_elem - i - 1; j++){
+			if(array[j] > array[j + 1]){
+				T element = array[j];
+				array[j] = array[j + 1];
+				array[j + 1] = element;
+			}
+		}
+	}
+	
+}
+
+template<typename T>
+void Demo_vector<T>::push_back(const T& value){
+
+	if(n_memory == n_elem)
+		reserve(2*(n_elem == 0 ? 1:n_elem));
+
+	new (array + n_elem) T(value);
+	n_elem++;
+}
+
+template<typename T>
+void Demo_vector<T>::remove_elem(size_t index){
+	
+	if(index > n_elem)
+		return;
+	
+	n_elem--;
+	
+	T* newarr = reinterpret_cast<T*>(new int8_t[n_elem * sizeof(T)]);
+	
+	try
+	{
+		for(size_t i = 0, j = 0; i < n_elem; i++){
+			if(i != (index - 1)){
+				new (newarr + j) T(array[i]);
+				j++;
+			}
+		}
+	}catch(...){
+		delete[] reinterpret_cast<int8_t*>(newarr);
+		throw;
+	}
+	
+	for(size_t i = 0; i < n_elem; i++)
+		array[i].~T();
+	
+	delete[] reinterpret_cast<int8_t*>(array);
+	array = newarr;
+	n_memory--;
+}
+
+===========================(Результат)===============================================================================
+
+Був викликаний конструктор з параметрами
+
+Був викликаний конструктор з параметрами
+
+Був викликаний конструктор з параметрами
+
+Був викликаний конструктор з параметрами
+
+Був викликаний конструктор з параметрами
+
+Був викликаний конструктор з параметрами
+
+Був виклакений конструктор за замовчуванням Demo_vector
+
+Був виклакений конструктор копіювання
+
+Був виклакений конструктор копіювання
+
+Був виклакений конструктор копіювання
+
+Був виклакений конструктор копіювання
+
+Був виклакений деструктор Student
+
+Був виклакений деструктор Student
+
+Був виклакений конструктор копіювання
+
+Був виклакений конструктор копіювання
+
+Був виклакений конструктор копіювання
+
+Був виклакений конструктор копіювання
+
+Був виклакений конструктор копіювання
+
+Був виклакений конструктор копіювання
+
+Був виклакений деструктор Student
+
+Був виклакений деструктор Student
+
+Був виклакений деструктор Student
+
+Був виклакений деструктор Student
+
+Був виклакений конструктор копіювання
+
+Був виклакений конструктор за замовчуванням Demo_vector
+
+Робота класу шаблоний список
+=======================================
+
+Демострація роботи метода виводу вмісту масива на екран
+
+Вміст масиву типу -->[int]<--
+---
+235
+567
+123
+76
+489
+---
+
+Вміст масиву типу -->[class Student]<--
+---
+так; Джек; Річард; 2018; 19;
+так; Том; Лінкольн; 2022; 21;
+ні; Алекс; Нільсон; 2020; 18;
+не вказано; Боб; Шоун; 2019; 24;
+ні; Джон; Кенеді; 2018; 18;
+---
+
+=======================================
+
+Демострація роботи метода отримання індексу переданого елемента у масив
+
+Переданий елемент [567]
+---
+1
+---
+
+Переданий елемент [ні; Алекс; Нільсон; 2020; 18;]
+---
+2
+---
+
+=======================================
+
+Демострація роботи метода для пошуку мінімального значення у масиві
+
+Мінімальний елемент у масиві типу -->[int]<-- це (76)
+---
+76
+---
+
+Мінімальний елемент у масиві типу -->[class Student]<-- це (так; Джек; Річард; 2018; 19;)
+---
+
+Був виклакений конструктор копіювання
+так; Джек; Річард; 2018; 19;
+---
+
+Був виклакений деструктор Student
+
+=======================================
+
+Демострація роботи метода для додавання елемента у масив
+
+Поточний маисв типу -->[int]<--
+---
+235
+567
+123
+76
+489
+---
+
+Елемент який додаємо у масив типу -->[int]<-- це (100)
+---
+235
+567
+123
+76
+489
+100
+---
+
+Поточний маисв типу -->[class Student]<--
+---
+так; Джек; Річард; 2018; 19;
+так; Том; Лінкольн; 2022; 21;
+ні; Алекс; Нільсон; 2020; 18;
+не вказано; Боб; Шоун; 2019; 24;
+ні; Джон; Кенеді; 2018; 18;
+---
+
+Елемент який додаємо у масив типу -->[class Student]<-- це (ні ;Карл; Марс; 2018; 20)
+---
+
+Був виклакений конструктор копіювання
+так; Джек; Річард; 2018; 19;
+так; Том; Лінкольн; 2022; 21;
+ні; Алекс; Нільсон; 2020; 18;
+не вказано; Боб; Шоун; 2019; 24;
+ні; Джон; Кенеді; 2018; 18;
+ні; Карл; Марс; 2018; 20;
+---
+
+=======================================
+
+Демострація роботи метода для видалення елемента з масиву
+
+Поточний маисв типу -->[int]<--
+---
+235
+567
+123
+76
+489
+100
+---
+
+Елемент який видаляємо з масива типу -->[int]<-- це (100), інедекс(6) при розрахунку з 1 
+---
+235
+567
+123
+76
+489
+---
+
+Поточний маисв типу -->[class Student]<--
+---
+так; Джек; Річард; 2018; 19;
+так; Том; Лінкольн; 2022; 21;
+ні; Алекс; Нільсон; 2020; 18;
+не вказано; Боб; Шоун; 2019; 24;
+ні; Джон; Кенеді; 2018; 18;
+ні; Карл; Марс; 2018; 20;
+---
+
+Елемент який видаляємо з масива типу -->[class Student]<-- це (ні ;Карл; Марс; 2018; 20), інедекс(6) при розрахунку з 1
+---
+
+Був виклакений конструктор копіювання
+
+Був виклакений конструктор копіювання
+
+Був виклакений конструктор копіювання
+
+Був виклакений конструктор копіювання
+
+Був виклакений конструктор копіювання
+
+Був виклакений деструктор Student
+
+Був виклакений деструктор Student
+
+Був виклакений деструктор Student
+
+Був виклакений деструктор Student
+
+Був виклакений деструктор Student
+так; Джек; Річард; 2018; 19;
+так; Том; Лінкольн; 2022; 21;
+ні; Алекс; Нільсон; 2020; 18;
+не вказано; Боб; Шоун; 2019; 24;
+ні; Джон; Кенеді; 2018; 18;
+---
+
+=======================================
+
+Демострація роботи метода для сортування масиву
+
+Поточний маисв типу -->[int]<--
+---
+235
+567
+123
+76
+489
+---
+
+Відсортований масив від найменшого значення до найбільшого
+---
+76
+123
+235
+489
+567
+---
+
+Поточний маисв типу -->[class Student]<--
+---
+так; Джек; Річард; 2018; 19;
+так; Том; Лінкольн; 2022; 21;
+ні; Алекс; Нільсон; 2020; 18;
+не вказано; Боб; Шоун; 2019; 24;
+ні; Джон; Кенеді; 2018; 18;
+---
+
+Відсортований масив від найменшого року вступу до найбільшого
+---
+
+Був виклакений конструктор копіювання
+
+Був виклакений деструктор Student
+
+Був виклакений конструктор копіювання
+
+Був виклакений деструктор Student
+
+Був виклакений конструктор копіювання
+
+Був виклакений деструктор Student
+
+Був виклакений конструктор копіювання
+
+Був виклакений деструктор Student
+
+Був виклакений конструктор копіювання
+
+Був виклакений деструктор Student
+
+Був виклакений конструктор копіювання
+
+Був виклакений деструктор Student
+так; Джек; Річард; 2018; 19;
+ні; Джон; Кенеді; 2018; 18;
+не вказано; Боб; Шоун; 2019; 24;
+ні; Алекс; Нільсон; 2020; 18;
+так; Том; Лінкольн; 2022; 21;
+---
+
+Був виклакений деструктор Demo_vector
+
+Був виклакений деструктор Student
+
+Був виклакений деструктор Student
+
+Був виклакений деструктор Student
+
+Був виклакений деструктор Student
+
+Був виклакений деструктор Student
+
+Був виклакений деструктор Demo_vector
+
+Був виклакений деструктор Student
+
+Був виклакений деструктор Student
+
+Був виклакений деструктор Student
+
+Був виклакений деструктор Student
+
+Був виклакений деструктор Student
+
+Був виклакений деструктор Student
+
+===========================(test_Student.cpp)===============================================================================
+#include <iostream>
+
+using std::string;
+
+#include "Student.h"
+#include <gtest/gtest.h>
+
+TEST(ClassStudent, test_default_construcotr)
+{
+	Student student_actual;
+	string expected_str_value = "не вказано";
+	unsigned int expected_num_value = 0;
+
+	ASSERT_EQ(expected_str_value, student_actual.get_budget_edu());
+	ASSERT_EQ(expected_str_value, student_actual.get_name_student());
+	ASSERT_EQ(expected_str_value, student_actual.get_name_famile());
+	ASSERT_EQ(expected_num_value, student_actual.get_enroll_year());
+	ASSERT_EQ(expected_num_value, student_actual.get_age());
+}
+
+TEST(ClassStudent, test_construcotr_with_param)
+{
+	Student student_actual(0, "не вказано", "не вказано", 0, 0);
+	string expected_str_value[] = { "не вказано", "ні" };
+	unsigned int expected_num_value = 0;
+
+	ASSERT_EQ(expected_str_value[1], student_actual.get_budget_edu());
+	ASSERT_EQ(expected_str_value[0], student_actual.get_name_student());
+	ASSERT_EQ(expected_str_value[0], student_actual.get_name_famile());
+	ASSERT_EQ(expected_num_value, student_actual.get_enroll_year());
+	ASSERT_EQ(expected_num_value, student_actual.get_age());
+}
+
+TEST(ClassStudent, test_construcotr_cpy)
+{
+	Student student_expect(1, "не вказано", "не вказано", 0, 0);
+	Student student_actual(student_expect);
+
+	ASSERT_EQ(student_expect.get_budget_edu(), student_actual.get_budget_edu());
+	ASSERT_EQ(student_expect.get_name_student(), student_actual.get_name_student());
+	ASSERT_EQ(student_expect.get_name_famile(), student_actual.get_name_famile());
+	ASSERT_EQ(student_expect.get_enroll_year(), student_actual.get_enroll_year());
+	ASSERT_EQ(student_expect.get_enroll_year(), student_actual.get_age());
+}
+
+===========================(test_Demo_vector.cpp)===============================================================================
+#include <iostream>
+
+using std::string;
+
+#include "Student.h"
+#include "Demo_vector.h"
+
+#include <gtest/gtest.h>
+
+TEST(ClassDemo_vector, test_find_index)
+{
+	Student student1(1,"Джек","Річард", 2019, 19);
+	Demo_vector<Student> vector_class(5, student1);
+	
+	//Перевірка на пошук пошук индекса певного елемента
+	size_t expected_index = 0;
+	
+	ASSERT_EQ(vector_class.find_i(student1), expected_index);
+	
+	//Перевірка на те як що у масиві не буде знайдене такий елемент метод поверне кількість елементів в цілому
+	size_t expected_value = 5;
+	
+	ASSERT_EQ(vector_class.find_i(student1), expected_index);
+}
+
+TEST(ClassDemo_vector, test_find_min_element)
+{
+	Student student1(1,"Джек","Річард", 2018, 19);
+	Student student2(1,"Том","Лінкольн", 2022, 21);
+	Student student3(0,"Алекс","Нільсон", 2020, 18);
+	Student student4(2,"Боб","Шоун", 2019, 24);
+	Student student5(0,"Джон","Кенеді", 2018, 18);
+	
+	Demo_vector<Student> vector_class;
+	vector_class.push_back(student1);
+	vector_class.push_back(student2);
+	vector_class.push_back(student3);
+	vector_class.push_back(student4);
+	vector_class.push_back(student5);
+	
+	//Мінімальний елемент визначається за роком вступу, в данному випадку найменший це 2018
+	ASSERT_EQ(vector_class.find_min(), student1);
+}
+
+TEST(ClassDemo_vector, test_add_element)
+{
+	Student student1(1,"Джек","Річард", 2018, 19);
+	Student student2(1,"Том","Лінкольн", 2022, 21);
+	Demo_vector<Student> vector_class(4,student2);
+	size_t expected_value = 4;
+	
+	vector_class.push_back(student1);
+	
+	//Як що студент був доданий успішно його індекс буде 4 при розрахунку з 0
+	ASSERT_EQ(vector_class.find_i(student1), expected_value);	
+}
+
+TEST(ClassDemo_vector, test_delete_element)
+{
+	Student student1(1,"Джек","Річард", 2018, 19);
+	Student student2(1,"Том","Лінкольн", 2022, 21);
+	Student student3(0,"Алекс","Нільсон", 2020, 18);
+	Student student4(2,"Боб","Шоун", 2019, 24);
+	Student student5(0,"Джон","Кенеді", 2018, 18);
+	
+	Demo_vector<Student> vector_class;
+	vector_class.push_back(student1);
+	vector_class.push_back(student2);
+	vector_class.push_back(student3);
+	vector_class.push_back(student4);
+	vector_class.push_back(student5);
+	
+	size_t expected_value = 4;
+	
+	vector_class.remove_elem(2);
+	
+	//Як що елемент був видалений успішно метод для пошук індекса елемента поверне кількість елементів так як не знайде той що ми видалили
+	ASSERT_EQ(vector_class.find_i(student2), expected_value);
+}
+
+TEST(ClassDemo_vector, test_sort_arr)
+{
+	Student student1(1,"Джек","Річард", 2018, 19);
+	Student student2(1,"Том","Лінкольн", 2022, 21);
+	Student student3(0,"Алекс","Нільсон", 2020, 18);
+	Student student4(2,"Боб","Шоун", 2019, 24);
+	Student student5(0,"Джон","Кенеді", 2018, 18);
+	
+	Demo_vector<Student> vector_class;
+	vector_class.push_back(student1);
+	vector_class.push_back(student2);
+	vector_class.push_back(student3);
+	vector_class.push_back(student4);
+	vector_class.push_back(student5);
+	
+	vector_class.sort_arr();
+	
+	//Перевіряється що елемнти були відсортовані правильно и відповідають своєму індексу у масиві
+	ASSERT_EQ(vector_class.find_i(student1), 0);
+	ASSERT_EQ(vector_class.find_i(student5), 1);
+	ASSERT_EQ(vector_class.find_i(student4), 2);
+	ASSERT_EQ(vector_class.find_i(student3), 3);
+	ASSERT_EQ(vector_class.find_i(student2), 4);
+}
+
+===========================(Результат тесту та покриття коду)===============================================================================
+Running main() from ./googletest/src/gtest_main.cc
+[==========] Running 8 tests from 2 test suites.
+[----------] Global test environment set-up.
+[----------] 5 tests from ClassDemo_vector
+[ RUN      ] ClassDemo_vector.test_find_index
+
+[       OK ] ClassDemo_vector.test_find_index (0 ms)
+[ RUN      ] ClassDemo_vector.test_find_min_element
+
+
+[       OK ] ClassDemo_vector.test_find_min_element (0 ms)
+[ RUN      ] ClassDemo_vector.test_add_element
+
+
+[       OK ] ClassDemo_vector.test_add_element (0 ms)
+[ RUN      ] ClassDemo_vector.test_delete_element
+
+[       OK ] ClassDemo_vector.test_delete_element (2 ms)
+[ RUN      ] ClassDemo_vector.test_sort_arr
+
+
+[       OK ] ClassDemo_vector.test_sort_arr (0 ms)
+[----------] 5 tests from ClassDemo_vector (4 ms total)
+
+[----------] 3 tests from ClassStudent
+[ RUN      ] ClassStudent.test_default_construcotr
+
+
+[       OK ] ClassStudent.test_default_construcotr (0 ms)
+[ RUN      ] ClassStudent.test_construcotr_with_param
+
+
+[       OK ] ClassStudent.test_construcotr_with_param (3 ms)
+[ RUN      ] ClassStudent.test_construcotr_cpy
+
+
+[       OK ] ClassStudent.test_construcotr_cpy (0 ms)
+[----------] 3 tests from ClassStudent (3 ms total)
+
+[----------] Global test environment tear-down
+[==========] 8 tests from 2 test suites ran. (8 ms total)
+[  PASSED  ] 8 tests.
+llvm-profdata merge -sparse dist/test.profraw -o dist/test.profdata
+llvm-cov report dist/test.bin -instr-profile=dist/test.profdata src/*.cpp
+Filename                                              Regions    Missed Regions     Cover   Functions  Missed Functions  Executed       Lines      Missed Lines     Cover    Branches   Missed Branches     Cover
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+/home/vlad/Documents/1cours/lab21/src/Student.cpp          15                 0   100.00%           9                 0   100.00%          32                 0   100.00%           4                 0   100.00%
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+TOTAL                                                      15                 0   100.00%           9                 0   100.00%          32                 0   100.00%           4                 0   100.00%
+llvm-cov show dist/test.bin -instr-profile=dist/test.profdata src/*.cpp --format html > dist/coverage.html
+
+===========================(Дослідження витоків пам'яті)===============================================================================
+
+==103697== Memcheck, a memory error detector
+==103697== Copyright (C) 2002-2022, and GNU GPL'd, by Julian Seward et al.
+==103697== Using Valgrind-3.19.0 and LibVEX; rerun with -h for copyright info
+==103697== Command: ./dist/main.bin
+==103697== Parent PID: 103686
+==103697== 
+==103697== 
+==103697== HEAP SUMMARY:
+==103697==     in use at exit: 0 bytes in 0 blocks
+==103697==   total heap usage: 29 allocs, 29 frees, 75,710 bytes allocated
+==103697== 
+==103697== All heap blocks were freed -- no leaks are possible
+==103697== 
+==103697== For lists of detected and suppressed errors, rerun with: -s
+==103697== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+
+======================================================================================================================================
+Структура проекту лабораторної роботи:
+   
+.
+├── Doxyfile
+├── Makefile
+├── README.md
+├── src
+│   ├── Demo_vector.h
+│   ├── Demo_vector.inl
+│   ├── main.cpp
+│   ├── Student.cpp
+│   └── Student.h
+└── test
+    ├── test_Demo_vector.cpp
+    └── test_Student.cpp
+
+2 directories, 10 files
+
+
+
+
